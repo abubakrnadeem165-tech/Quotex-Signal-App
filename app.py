@@ -22,17 +22,70 @@ st.markdown("""
     .sell-signal { background-color: #ef4444; color: white; border: 2px solid #991b1b; }
     .hold-signal { background-color: #334155; color: #cbd5e1; border: 2px solid #1e293b; }
     .metric-header { font-size: 16px; font-weight: bold; color: #38bdf8; margin-top: 15px; }
+    .money-box { background-color: #1e293b; padding: 12px; border-radius: 6px; border-left: 4px solid #38bdf8; margin-bottom: 10px; font-size: 14px; }
     </style>
 """, unsafe_allow_html=True)
 
-st.image(app_logo_url, width=70)
-st.title("🤖 Quotex Ultimate Hybrid Master Engine")
-st.caption("All-In-One Platform: Multi-Timeframe Structure, SNR Levels, FVG Blocks, Indicators & All Candle Patterns")
-st.markdown("---")
+# =====================================================================
+# 2. GLOBAL SIDEBAR: PRO RISK MANAGER & DISCIPLINE ENGINE
+# =====================================================================
+st.sidebar.image(app_logo_url, width=50)
+st.sidebar.title("🧮 Pro Risk Manager")
+st.sidebar.caption("Institutional Capital Protection System")
+st.sidebar.markdown("---")
+
+# User Inputs for Risk Management
+capital = st.sidebar.number_input("💵 Total Account Balance ($)", min_value=1.0, value=5.0, step=1.0)
+payout = st.sidebar.slider("📊 Quotex Payout (%)", min_value=50, max_value=98, value=85)
+
+# Smart Safe Amount Rules for Small Accounts
+if capital <= 5.0:
+    trade_amount = 1.0  # Quotex Minimum Trade
+    potential_profit = round((trade_amount * (payout / 100.0)), 2)
+    
+    st.sidebar.markdown("### 📋 Strict $5 Growth Plan:")
+    st.sidebar.markdown(f"""
+    <div class="money-box" style="border-left-color: #10b981;">
+        🔥 <b>Base Trade Amount:</b> <span style="color:#34d399; font-size:16px;"><b>${trade_amount}</b></span><br>
+        💰 <b>Net Profit on Win:</b> <span style="color:#38bdf8;">+${potential_profit}</span>
+    </div>
+    <div class="money-box" style="border-left-color: #ef4444;">
+        ⚠️ <b>Martingale Status:</b> <span style="color:#f87171;"><b>DISABLED (❌ SAFE MODE)</b></span><br>
+        <span style="font-size:12px; color:#94a3b8;">Balance kam hone ki wajah se loss recovery multiplier band kiya gaya hai taake account zero na ho.</span>
+    </div>
+    """, unsafe_allow_html=True)
+    st.sidebar.error("🛑 Stop Rule: Agar pehli trade loss ho jaye, toh chup karke system band kar dein. Badla nahi lena!")
+else:
+    # Normal Risk Engine for Growing Accounts
+    risk_percent = st.sidebar.slider("🎯 Risk Per Trade (%)", min_value=1, max_value=10, value=2)
+    trade_amount = round((capital * (risk_percent / 100.0)), 2)
+    if trade_amount < 1.0: trade_amount = 1.0
+    
+    potential_profit = round((trade_amount * (payout / 100.0)), 2)
+    mg1 = round(trade_amount * 2.2, 2)
+    mg2 = round(mg1 * 2.2, 2)
+    
+    st.sidebar.markdown("### 📋 Standard Trade Plan:")
+    st.sidebar.markdown(f"""
+    <div class="money-box">
+        🔥 <b>Base Trade Amount:</b> <span style="color:#34d399; font-size:16px;"><b>${trade_amount}</b></span><br>
+        💰 <b>Net Profit on Win:</b> <span style="color:#38bdf8;">+${potential_profit}</span>
+    </div>
+    <div class="money-box" style="border-left-color: #fbbf24;">
+        ⚠️ <b>Loss Recovery (Martingale):</b><br>
+        • Step-1 (M1): <span style="color:#fbbf24;">${mg1}</span><br>
+        • Step-2 (M2): <span style="color:#f87171;">${mg2}</span>
+    </div>
+    """, unsafe_allow_html=True)
 
 # =====================================================================
-# 2. MASTER GLOBAL OPERATION MODE SWITCHER
+# 3. MAIN INTERFACE & GLOBAL MODE SWITCHER
 # =====================================================================
+st.image(app_logo_url, width=70)
+st.title("🤖 Quotex Ultimate Hybrid Master Engine")
+st.caption("All-In-One Platform: Multi-Timeframe Structure, SNR Levels, FVG Blocks, Indicators & Risk Controller")
+st.markdown("---")
+
 market_mode = st.selectbox("🌐 CHOOSE SYSTEM MODE", [
     "Real Market (100% Fully Automatic Cloud Scanner)", 
     "OTC Market (Safe Pro-Trader Checklist Decision Helper)"
@@ -68,10 +121,10 @@ if market_mode == "Real Market (100% Fully Automatic Cloud Scanner)":
     """
     components.html(tv_widget_html, height=450)
     
-    st.markdown("""
-    > 📥 **Live Execution Rule:** 
-    > * **STRONG BUY (Sui Extreme Right Par):** Execute 1-2 Min **CALL (UP)** trade on Quotex.
-    > * **STRONG SELL (Sui Extreme Left Par):** Execute 1-2 Min **PUT (DOWN)** trade on Quotex.
+    st.markdown(f"""
+    > 📥 **Live Execution Rule (Use Risk Plan from Sidebar):** 
+    > * **STRONG BUY (Sui Extreme Right Par):** Execute 1-2 Min **CALL (UP)** with **${trade_amount}**.
+    > * **STRONG SELL (Sui Extreme Left Par):** Execute 1-2 Min **PUT (DOWN)** with **${trade_amount}**.
     > * **NEUTRAL / NORMAL BUY-SELL:** **STRICT HOLD** (Engine filters risk).
     """)
 
@@ -133,11 +186,11 @@ else:
 
         # Final Decision Display Matrix
         if is_structure_buy and (is_pattern_buy and is_indicators_buy):
-            st.markdown(f'<div class="signal-box buy-signal">🟩 SIGNAL: HIGH PROBABILITY CALL (UP) <br><span style="font-size:14px; font-weight:normal;">All Strategies Aligned! 15M Frame, {current_pattern}, and Indicators are supporting buyers. Safe 1-2 Min Entry!</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="signal-box buy-signal">🟩 SIGNAL: CALL (UP) <br><span style="font-size:14px; font-weight:normal;">All Strategies Aligned! Invest <b>${trade_amount}</b>. Safe 1-2 Min Entry!</span></div>', unsafe_allow_html=True)
             st.balloons()
             
         elif is_structure_sell and (is_pattern_sell and is_indicators_sell):
-            st.markdown(f'<div class="signal-box sell-signal">🟥 SIGNAL: HIGH PROBABILITY PUT (DOWN) <br><span style="font-size:14px; font-weight:normal;">All Strategies Aligned! 15M Institutional Supply, {current_pattern}, and Momentum are supporting sellers. Safe 1-2 Min Entry!</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="signal-box sell-signal">🟥 SIGNAL: PUT (DOWN) <br><span style="font-size:14px; font-weight:normal;">All Strategies Aligned! Invest <b>${trade_amount}</b>. Safe 1-2 Min Entry!</span></div>', unsafe_allow_html=True)
             
         else:
-            st.markdown('<div class="signal-box hold-signal">🟨 SUGGESTION: STRICT HOLD (FILTER ACTIVATED) <br><span style="font-size:14px; font-weight:normal;">Confluence Missing: Kuch strategies call aur kuch sell keh rahi hain. Risk control karne ke liye abhi koi trade na lein!</span></div>', unsafe_allow_html=True)
+            st.markdown('<div class="signal-box hold-signal">🟨 SUGGESTION: STRICT HOLD (FILTER ACTIVATED) <br><span style="font-size:14px; font-weight:normal;">Confluence Missing: Strategies match nahi ho rahi hain. Capital safe rakhne ke liye NO TRADE!</span></div>', unsafe_allow_html=True)
