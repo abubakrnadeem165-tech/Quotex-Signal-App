@@ -9,7 +9,7 @@ app_logo_url = "https://cdn-icons-png.flaticon.com/512/2422/2422796.png"
 st.set_page_config(
     page_title="Quotex Ultimate Hybrid Master Engine", 
     page_icon=app_logo_url, 
-    layout="centered"
+    layout="wide"
 )
 
 st.markdown("""
@@ -18,179 +18,79 @@ st.markdown("""
     .stButton>button { width: 100%; background-color: #0284c7; color: white; font-weight: bold; border-radius: 8px; padding: 14px; font-size: 18px; }
     .stButton>button:hover { background-color: #0369a1; }
     .signal-box { padding: 25px; border-radius: 12px; text-align: center; font-size: 24px; font-weight: bold; margin-top: 20px; box-shadow: 0px 4px 20px rgba(0,0,0,0.6); }
-    .buy-signal { background-color: #10b981; color: white; border: 2px solid #065f46; }
-    .sell-signal { background-color: #ef4444; color: white; border: 2px solid #991b1b; }
-    .hold-signal { background-color: #334155; color: #cbd5e1; border: 2px solid #1e293b; }
     .metric-header { font-size: 16px; font-weight: bold; color: #38bdf8; margin-top: 15px; }
-    .money-box { background-color: #1e293b; padding: 12px; border-radius: 6px; border-left: 4px solid #38bdf8; margin-bottom: 10px; font-size: 14px; }
+    .money-box { background-color: #1e293b; padding: 12px; border-radius: 6px; border-left: 4px solid #ef4444; margin-bottom: 10px; font-size: 14px; }
+    .rule-box { background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 15px; }
     </style>
 """, unsafe_allow_html=True)
 
 # =====================================================================
-# 2. GLOBAL SIDEBAR: PRO RISK MANAGER & DISCIPLINE ENGINE
+# 2. SIDEBAR: EMERGENCY ACCOUNT RECOVERY MODE
 # =====================================================================
 st.sidebar.image(app_logo_url, width=50)
-st.sidebar.title("🧮 Pro Risk Manager")
-st.sidebar.caption("Institutional Capital Protection System")
+st.sidebar.title("🧮 Account Recovery Manager")
 st.sidebar.markdown("---")
 
-# User Inputs for Risk Management
-capital = st.sidebar.number_input("💵 Total Account Balance ($)", min_value=1.0, value=5.0, step=1.0)
-payout = st.sidebar.slider("📊 Quotex Payout (%)", min_value=50, max_value=98, value=85)
+capital = st.sidebar.number_input("💵 Live Balance ($)", min_value=0.0, value=1.36, step=0.01)
 
-# Smart Safe Amount Rules for Small Accounts
-if capital <= 5.0:
-    trade_amount = 1.0  # Quotex Minimum Trade
-    potential_profit = round((trade_amount * (payout / 100.0)), 2)
-    
-    st.sidebar.markdown("### 📋 Strict $5 Growth Plan:")
-    st.sidebar.markdown(f"""
-    <div class="money-box" style="border-left-color: #10b981;">
-        🔥 <b>Base Trade Amount:</b> <span style="color:#34d399; font-size:16px;"><b>${trade_amount}</b></span><br>
-        💰 <b>Net Profit on Win:</b> <span style="color:#38bdf8;">+${potential_profit}</span>
-    </div>
-    <div class="money-box" style="border-left-color: #ef4444;">
-        ⚠️ <b>Martingale Status:</b> <span style="color:#f87171;"><b>DISABLED (❌ SAFE MODE)</b></span><br>
-        <span style="font-size:12px; color:#94a3b8;">Balance kam hone ki wajah se loss recovery multiplier band kiya gaya hai taake account zero na ho.</span>
-    </div>
-    """, unsafe_allow_html=True)
-    st.sidebar.error("🛑 Stop Rule: Agar pehli trade loss ho jaye, toh chup karke system band kar dein. Badla nahi lena!")
-else:
-    # Normal Risk Engine for Growing Accounts
-    risk_percent = st.sidebar.slider("🎯 Risk Per Trade (%)", min_value=1, max_value=10, value=2)
-    trade_amount = round((capital * (risk_percent / 100.0)), 2)
-    if trade_amount < 1.0: trade_amount = 1.0
-    
-    potential_profit = round((trade_amount * (payout / 100.0)), 2)
-    mg1 = round(trade_amount * 2.2, 2)
-    mg2 = round(mg1 * 2.2, 2)
-    
-    st.sidebar.markdown("### 📋 Standard Trade Plan:")
-    st.sidebar.markdown(f"""
-    <div class="money-box">
-        🔥 <b>Base Trade Amount:</b> <span style="color:#34d399; font-size:16px;"><b>${trade_amount}</b></span><br>
-        💰 <b>Net Profit on Win:</b> <span style="color:#38bdf8;">+${potential_profit}</span>
-    </div>
-    <div class="money-box" style="border-left-color: #fbbf24;">
-        ⚠️ <b>Loss Recovery (Martingale):</b><br>
-        • Step-1 (M1): <span style="color:#fbbf24;">${mg1}</span><br>
-        • Step-2 (M2): <span style="color:#f87171;">${mg2}</span>
-    </div>
-    """, unsafe_allow_html=True)
+st.sidebar.error("🚨 LAST HOPE MODE ACTIVE")
+st.sidebar.markdown(f"""
+<div class="money-box">
+    🔥 <b>Next Fixed Trade:</b> <span style="color:#f87171; font-size:16px;"><b>$1.00 Only</b></span><br>
+    ⚠️ <b>Strict Expiry Rule:</b> Quotex par trade ka time strictly <b>00:01:00 (1 Minute)</b> hona chahiye! 2 min par kabhi nahi jana.
+</div>
+""", unsafe_allow_html=True)
 
 # =====================================================================
-# 3. MAIN INTERFACE & GLOBAL MODE SWITCHER
+# 3. MAIN DASHBOARD & MONITORING ENGINE
 # =====================================================================
-st.image(app_logo_url, width=70)
 st.title("🤖 Quotex Ultimate Hybrid Master Engine")
-st.caption("All-In-One Platform: Multi-Timeframe Structure, SNR Levels, FVG Blocks, Indicators & Risk Controller")
+st.caption("Strict 1-Minute Radar Dashboard - Built for Recovery Protection")
 st.markdown("---")
 
-market_mode = st.selectbox("🌐 CHOOSE SYSTEM MODE", [
-    "Real Market (100% Fully Automatic Cloud Scanner)", 
-    "OTC Market (Safe Pro-Trader Checklist Decision Helper)"
-])
+# Cheat Sheet for the user to detect FRESH vs OLD signals
+st.markdown("""
+<div class="rule-box">
+    <h3 style="color:#fbbf24; margin-top:0;">🛑 FRESH vs OLD SIGNAL SECRETS (Loss Se Bachne Ka Tareeqa)</h3>
+    <p><b>1. FRESH SIGNAL (🟢 Safe Entry):</b> Agar aap meter ke niche dekh rahay ho aur <b>Buy ka number achanak 13-14 se jump kar ke 18, 20, ya 22</b> par chala jaye aur sui Strong Buy par aa jaye. Iska matlab hai naya jhatka aaya hai, furan entry lo!</p>
+    <p><b>2. OLD SIGNAL (❌ Dangerous Entry - DO NOT TOUCH):</b> Agar aapne dashboard khola aur wahan pehle se hi <b>Buy 22 ya 24</b> par khara hai aur sui extreme corner par chipki hui hai. Aapne 30 seconds wait kiya aur number wahi ruka hua hai, toh enter mat hona. Market wahan se direct reverse ho kar loss de gi.</p>
+</div>
+""", unsafe_allow_html=True)
 
-# =====================================================================
-# MODE 1: REAL MARKET (100% AUTOMATIC STRATEGY CONFLUENCE)
-# =====================================================================
-if market_mode == "Real Market (100% Fully Automatic Cloud Scanner)":
-    st.subheader("🚀 Live Multi-Strategy Scanner (Auto-Tracking)")
-    
-    pair_selected = st.selectbox("🎯 Target Real Currency Pair", ["EURUSD", "GBPUSD", "USDJPY", "EURJPY", "AUDUSD", "USDCAD"])
-    st.caption("TradingView Core Engine is combining 15M Structural Flows, Pivot SNR, RSI, MACD & Candles continuously...")
-    
-    # Advanced TradingView Technical Gauge Widget Integration
-    tv_widget_html = f"""
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
-      {{
-      "interval": "1m",
-      "width": "100%",
-      "isIndicatorOnly": false,
-      "height": 440,
-      "symbol": "FX:{pair_selected}",
-      "showIntervalTabs": true,
-      "displayMode": "single",
-      "locale": "en",
-      "colorTheme": "dark"
-    }}
-      </script>
-    </div>
-    """
-    components.html(tv_widget_html, height=450)
-    
-    st.markdown(f"""
-    > 📥 **Live Execution Rule (Use Risk Plan from Sidebar):** 
-    > * **STRONG BUY (Sui Extreme Right Par):** Execute 1-2 Min **CALL (UP)** with **${trade_amount}**.
-    > * **STRONG SELL (Sui Extreme Left Par):** Execute 1-2 Min **PUT (DOWN)** with **${trade_amount}**.
-    > * **NEUTRAL / NORMAL BUY-SELL:** **STRICT HOLD** (Engine filters risk).
-    """)
+# Grid Layout for 4 Major Pairs
+col1, col2 = st.columns(2)
 
-# =====================================================================
-# MODE 2: OTC MARKET (SAFE CHECKLIST METHOD WITH ALL STRATEGIES)
-# =====================================================================
-else:
-    st.subheader("🕵️‍♂️ Safe OTC Matrix Setup (Multi-Strategy Checklist)")
-    st.caption("Apne Quotex Live OTC Chart Ko Dekhein Aur Niche Ki Conditions Ko Match Karke Select Karein:")
+with col1:
+    st.markdown("### 💱 EUR/USD (Strict 1-Min)")
+    components.html("""
+    <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+    {"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": 380, "symbol": "FX:EURUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}
+    </script></div>""", height=390)
     
-    otc_pair = st.selectbox("🎯 Target OTC Asset Pair", [
-        "USD/BRL (OTC)", "EUR/USD (OTC)", "GBP/USD (OTC)", "USD/INR (OTC)", "EUR/JPY (OTC)", "USD/ARS (OTC)"
-    ])
+with col2:
+    st.markdown("### 💱 GBP/USD (Strict 1-Min)")
+    components.html("""
+    <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+    {"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": 380, "symbol": "FX:GBPUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}
+    </script></div>""", height=390)
+
+st.markdown("---")
+col3, col4 = st.columns(2)
+
+with col3:
+    st.markdown("### 💱 USD/JPY (Strict 1-Min)")
+    components.html("""
+    <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+    {"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": 380, "symbol": "FX:USDJPY", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}
+    </script></div>""", height=390)
     
-    st.markdown("---")
-    # Strategy Block 1: Multi-Timeframe Structure & Institutional Levels
-    st.markdown('<p class="metric-header">📐 Strategy Block 1: 15-Min Macro Structure & SNR Zones</p>', unsafe_allow_html=True)
-    macro_trend = st.radio("15-Min Chart Par Market Ka Trend Flow Kya Hai?", ["BULLISH (Upar Ki Taraf Heavy Flow)", "BEARISH (Niche Ki Taraf Heavy Flow)", "SIDEWAYS (Range Me Phansa Hua Zone)"])
-    snr_zone = st.radio("Kya Price Kisi Major 15-Min Level / FVG Block Par Hai?", ["At Major Support / FVG Demand Zone", "At Major Resistance / Supply Zone", "Middle Zone (No Clear Institutional Level)"])
-
-    st.markdown("---")
-    # Strategy Block 2: Comprehensive Candlestick Pattern Engine
-    st.markdown('<p class="metric-header">🕯️ Strategy Block 2: 1-Min Candlestick Patterns Triggers</p>', unsafe_allow_html=True)
-    current_pattern = st.selectbox("Abhi Live 1-Min Candle Kaunsi Close Hui Hai?", [
-        "Bullish Hammer / Pinbar",
-        "Bearish Shooting Star",
-        "Bullish Engulfing",
-        "Bearish Engulfing",
-        "Bullish Marubozu (Full Strong Green)",
-        "Bearish Marubozu (Full Strong Red)",
-        "Normal Moving Candle (No Specific Pattern)"
-    ])
-
-    st.markdown("---")
-    # Strategy Block 3: Mathematical Indicators Confluence
-    st.markdown('<p class="metric-header">📊 Strategy Block 3: Momentum Indicators Alignment</p>', unsafe_allow_html=True)
-    col1, col2 = st.columns(2)
-    with col1:
-        rsi_state = st.radio("RSI Indicator Ki State:", ["Oversold Zone (<35)", "Overbought Zone (>65)", "Normal Balanced Zone"])
-    with col2:
-        macd_state = st.radio("MACD Line Crossover State:", ["Golden Cross (Bullish Signal)", "Dead Cross (Bearish Signal)", "Neutral / No Cross"])
-
-    st.markdown("---")
-    
-    # Engine Computation Algorithm
-    if st.button("⚡ RUN FULL STRATEGY CONFLUENCE ALGORITHM", use_container_width=True):
-        with st.spinner("🤖 System analyzing all 3 strategy blocks simultaneously..."):
-            time.sleep(1.5)
-        
-        # Comprehensive CALL (BUY) Rule Logic
-        is_structure_buy = (macro_trend == "BULLISH (Upar Ki Taraf Heavy Flow)" or snr_zone == "At Major Support / FVG Demand Zone")
-        is_pattern_buy = (current_pattern in ["Bullish Hammer / Pinbar", "Bullish Engulfing", "Bullish Marubozu (Full Strong Green)"])
-        is_indicators_buy = (rsi_state == "Oversold Zone (<35)" or macd_state == "Golden Cross (Bullish Signal)")
-        
-        # Comprehensive PUT (SELL) Rule Logic
-        is_structure_sell = (macro_trend == "BEARISH (Niche Ki Taraf Heavy Flow)" or snr_zone == "At Major Resistance / Supply Zone")
-        is_pattern_sell = (current_pattern in ["Bearish Shooting Star", "Bearish Engulfing", "Bearish Marubozu (Full Strong Red)"])
-        is_indicators_sell = (rsi_state == "Overbought Zone (>65)" or macd_state == "Dead Cross (Bearish Signal)")
-
-        # Final Decision Display Matrix
-        if is_structure_buy and (is_pattern_buy and is_indicators_buy):
-            st.markdown(f'<div class="signal-box buy-signal">🟩 SIGNAL: CALL (UP) <br><span style="font-size:14px; font-weight:normal;">All Strategies Aligned! Invest <b>${trade_amount}</b>. Safe 1-2 Min Entry!</span></div>', unsafe_allow_html=True)
-            st.balloons()
-            
-        elif is_structure_sell and (is_pattern_sell and is_indicators_sell):
-            st.markdown(f'<div class="signal-box sell-signal">🟥 SIGNAL: PUT (DOWN) <br><span style="font-size:14px; font-weight:normal;">All Strategies Aligned! Invest <b>${trade_amount}</b>. Safe 1-2 Min Entry!</span></div>', unsafe_allow_html=True)
-            
-        else:
-            st.markdown('<div class="signal-box hold-signal">🟨 SUGGESTION: STRICT HOLD (FILTER ACTIVATED) <br><span style="font-size:14px; font-weight:normal;">Confluence Missing: Strategies match nahi ho rahi hain. Capital safe rakhne ke liye NO TRADE!</span></div>', unsafe_allow_html=True)
+with col4:
+    st.markdown("### 💱 EUR/JPY (Strict 1-Min)")
+    components.html("""
+    <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+    {"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": 380, "symbol": "FX:EURJPY", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}
+    </script></div>""", height=390)
