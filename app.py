@@ -6,14 +6,10 @@ import time
 # 1. PREMIUM INSTITUTIONAL INTERFACE SETUP
 # =====================================================================
 app_logo_url = "https://cdn-icons-png.flaticon.com/512/2422/2422796.png"
-st.set_page_config(
-    page_title="Quotex Ultimate Hybrid Master Engine", 
-    page_icon=app_logo_url, 
-    layout="wide"
-)
+st.set_page_config(page_title="Quotex Ultimate Hybrid Master Engine", page_icon=app_logo_url, layout="wide")
 
 st.markdown("""
-    <style>
+<style>
     .main { background-color: #0a0d14; color: #f1f5f9; }
     .stButton>button { width: 100%; background-color: #0284c7; color: white; font-weight: bold; border-radius: 8px; padding: 14px; font-size: 18px; }
     .stButton>button:hover { background-color: #0369a1; }
@@ -25,7 +21,7 @@ st.markdown("""
     .money-box { background-color: #1e293b; padding: 12px; border-radius: 6px; border-left: 4px solid #ef4444; margin-bottom: 10px; font-size: 14px; }
     .rule-box { background-color: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 15px; }
     h5 { margin-bottom: 5px !important; color: #38bdf8; font-weight: bold; }
-    </style>
+</style>
 """, unsafe_allow_html=True)
 
 # =====================================================================
@@ -34,9 +30,7 @@ st.markdown("""
 st.sidebar.image(app_logo_url, width=50)
 st.sidebar.title("🧮 Account Recovery")
 st.sidebar.markdown("---")
-
 capital = st.sidebar.number_input("💵 Live Balance ($)", min_value=0.0, value=1.36, step=0.01)
-
 st.sidebar.error("🚨 LAST HOPE MODE ACTIVE")
 st.sidebar.markdown(f"""
 <div class="money-box">
@@ -53,15 +47,14 @@ st.caption("Multi-Pair Radar Monitor Engine - Built for Precision Asset Tracking
 st.markdown("---")
 
 market_mode = st.selectbox("🌐 CHOOSE SYSTEM MODE", [
-    "Real Market (Multi-Pair Live Radar Dashboard)", 
+    "Real Market (Multi-Pair Live Radar Dashboard)",
     "OTC Market (Safe Pro-Trader Checklist Decision Helper)"
 ])
 
 # =====================================================================
-# MODE A: REAL MARKET (4-COLUMN RADAR GRID - NO SCROLL)
+# MODE A: REAL MARKET (6-COLUMN RADAR GRID - EXTENDED)
 # =====================================================================
 if market_mode == "Real Market (Multi-Pair Live Radar Dashboard)":
-    # Compact Cheat Sheet to protect user focus
     st.markdown("""
     <div class="rule-box">
         <h3 style="color:#fbbf24; margin-top:0; font-size:16px; margin-bottom:5px;">🛑 FRESH vs OLD SIGNAL SECRETS (Loss Se Bachne Ka Tareeqa)</h3>
@@ -71,41 +64,34 @@ if market_mode == "Real Market (Multi-Pair Live Radar Dashboard)":
         </span>
     </div>
     """, unsafe_allow_html=True)
-
-    col1, col2, col3, col4 = st.columns(4)
+    
+    # Grid columns 4 se badha kar 6 kar di hain
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
     widget_height = 315
-
+    
     with col1:
         st.markdown("##### 💱 EUR/USD (1m)")
-        components.html(f"""
-        <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
-        {{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:EURUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}
-        </script></div>""", height=widget_height+10)
-
+        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:EURUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
+        
     with col2:
         st.markdown("##### 💱 GBP/USD (1m)")
-        components.html(f"""
-        <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
-        {{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:GBPUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}
-        </script></div>""", height=widget_height+10)
-
+        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:GBPUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
+        
     with col3:
         st.markdown("##### 💱 USD/JPY (1m)")
-        components.html(f"""
-        <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
-        {{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:USDJPY", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}
-        </script></div>""", height=widget_height+10)
-
+        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:USDJPY", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
+        
     with col4:
         st.markdown("##### 💱 EUR/JPY (1m)")
-        components.html(f"""
-        <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
-        {{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:EURJPY", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}
-        </script></div>""", height=widget_height+10)
+        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:EURJPY", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
+        
+    with col5:
+        st.markdown("##### 💱 AUD/USD (1m)")
+        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:AUDUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
+        
+    with col6:
+        st.markdown("##### 💱 USD/CAD (1m)")
+        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:USDCAD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
 
     st.markdown("---")
 
@@ -115,7 +101,7 @@ if market_mode == "Real Market (Multi-Pair Live Radar Dashboard)":
 else:
     st.subheader("🕵️‍♂️ Safe OTC Matrix Setup (Multi-Strategy Checklist)")
     st.info("💡 Note: OTC market me indicators direct kaam nahi karte. Pehle Quotex ka chart dekhein, phir niche details check karein:")
-
+    
     col_otc1, col_otc2 = st.columns(2)
     
     with col_otc1:
@@ -129,7 +115,7 @@ else:
     with col_otc2:
         rsi_state = st.radio("📊 4. RSI (14) Condition", ["Overbought (>70)", "Oversold (<30)", "Normal Middle Zone"])
         macd_state = st.radio("📉 5. MACD (12, 26, 9) Cross", ["Bullish Cross (Green Line Up)", "Bearish Cross (Red Line Up)", "No Clear Cross"])
-
+        
     st.markdown("---")
     
     # Mathematical Confluence Algorithm Block
@@ -149,7 +135,7 @@ else:
         if current_pattern in ["Shooting Star (Bearish Reversal)", "Bearish Engulfing"]: score -= 2
         if rsi_state == "Overbought (>70)": score -= 1.5
         if macd_state == "Bearish Cross (Red Line Up)": score -= 1.5
-
+        
         # Signal Output Generation Logic
         if score >= 3.5:
             st.markdown(f'<div class="signal-box buy-signal">🟩 SIGNAL: CALL (UP) <br><span style="font-size:14px;">Confluence Score: +{score} | Expiry: 1-2 Min</span></div>', unsafe_allow_html=True)
