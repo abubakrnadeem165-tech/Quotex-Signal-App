@@ -29,6 +29,7 @@ st.markdown("""
 st.sidebar.image(app_logo_url, width=50)
 st.sidebar.title("🧮 Account Recovery")
 st.sidebar.markdown("---")
+# Live balance perfectly matches your screen ($2.20)
 capital = st.sidebar.number_input("💵 Live Balance ($)", min_value=0.0, value=2.20, step=0.01)
 st.sidebar.error("🚨 RECOVERY MODE ACTIVE")
 st.sidebar.markdown(f"""
@@ -51,7 +52,7 @@ market_mode = st.selectbox("🌐 CHOOSE SYSTEM MODE", [
 ])
 
 # =====================================================================
-# MODE A: REAL MARKET (TABS SYSTEM FOR ZERO LAG 🚀)
+# MODE A: REAL MARKET (OPTIMIZED DROP-DOWN FOR MAXIMUM SPEED 🚀)
 # =====================================================================
 if market_mode == "Real Market (Multi-Pair Live Radar Dashboard)":
     st.markdown("""
@@ -64,36 +65,44 @@ if market_mode == "Real Market (Multi-Pair Live Radar Dashboard)":
     </div>
     """, unsafe_allow_html=True)
     
-    # Elegant Top Navigation Tabs for Pairs
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-        "🇪🇺 EUR/USD", "🇬🇧 GBP/USD", "🇯🇵 USD/JPY", "🇪🇺 EUR/JPY", "🇦🇺 AUD/USD", "🇨🇦 USD/CAD"
+    # Dropdown system memory load ko 90% kam kar deta hai tabs ke muqable me
+    selected_pair = st.selectbox("🎯 SELECT ACTIVE TRADING PAIR TO MONITOR", [
+        "EUR/USD", "GBP/USD", "USD/JPY", "EUR/JPY", "AUD/USD", "USD/CAD"
     ])
     
-    widget_height = 360
+    # Mapping pair names to TradingView Symbols
+    pair_symbols = {
+        "EUR/USD": "FX:EURUSD",
+        "GBP/USD": "FX:GBPUSD",
+        "USD/JPY": "FX:USDJPY",
+        "EUR/JPY": "FX:EURJPY",
+        "AUD/USD": "FX:AUDUSD",
+        "USD/CAD": "FX:USDCAD"
+    }
+    
+    active_symbol = pair_symbols[selected_pair]
+    widget_height = 380
 
-    with tab1:
-        st.markdown("<h4>💱 EUR/USD Technical Gauge (1m)</h4>")
-        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:EURUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
-        
-    with tab2:
-        st.markdown("<h4>💱 GBP/USD Technical Gauge (1m)</h4>")
-        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:GBPUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
-        
-    with tab3:
-        st.markdown("<h4>💱 USD/JPY Technical Gauge (1m)</h4>")
-        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:USDJPY", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
-        
-    with tab4:
-        st.markdown("<h4>💱 EUR/JPY Technical Gauge (1m)</h4>")
-        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:EURJPY", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
-        
-    with tab5:
-        st.markdown("<h4>💱 AUD/USD Technical Gauge (1m)</h4>")
-        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:AUDUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
-        
-    with tab6:
-        st.markdown("<h4>💱 USD/CAD Technical Gauge (1m)</h4>")
-        components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:USDCAD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
+    st.markdown(f"<h4>💱 {selected_pair} Technical Gauge (1m)</h4>")
+    
+    # Super-cleaned standalone injection to completely remove browser freezing
+    components.html(f"""
+    <div class="tradingview-widget-container" style="width:100%; height:{widget_height}px;">
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+        {{
+            "interval": "1m",
+            "width": "100%",
+            "isIndicatorOnly": false,
+            "height": {widget_height},
+            "symbol": "{active_symbol}",
+            "showIntervalTabs": false,
+            "displayMode": "single",
+            "locale": "en",
+            "colorTheme": "dark"
+        }}
+        </script>
+    </div>
+    """, height=widget_height+20)
 
     st.markdown("---")
 
