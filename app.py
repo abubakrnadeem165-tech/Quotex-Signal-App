@@ -17,10 +17,9 @@ st.markdown("""
     .buy-signal { background-color: #10b981; color: white; border: 2px solid #065f46; }
     .sell-signal { background-color: #ef4444; color: white; border: 2px solid #991b1b; }
     .hold-signal { background-color: #334155; color: #cbd5e1; border: 2px solid #1e293b; }
-    .metric-header { font-size: 16px; font-weight: bold; color: #38bdf8; margin-top: 15px; }
     .money-box { background-color: #1e293b; padding: 12px; border-radius: 6px; border-left: 4px solid #ef4444; margin-bottom: 10px; font-size: 14px; }
     .rule-box { background-color: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 15px; }
-    h5 { margin-bottom: 5px !important; color: #38bdf8; font-weight: bold; }
+    h4 { color: #38bdf8; font-weight: bold; margin-bottom: 10px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -30,12 +29,12 @@ st.markdown("""
 st.sidebar.image(app_logo_url, width=50)
 st.sidebar.title("🧮 Account Recovery")
 st.sidebar.markdown("---")
-capital = st.sidebar.number_input("💵 Live Balance ($)", min_value=0.0, value=1.36, step=0.01)
-st.sidebar.error("🚨 LAST HOPE MODE ACTIVE")
+capital = st.sidebar.number_input("💵 Live Balance ($)", min_value=0.0, value=2.20, step=0.01)
+st.sidebar.error("🚨 RECOVERY MODE ACTIVE")
 st.sidebar.markdown(f"""
 <div class="money-box">
     🔥 <b>Next Fixed Trade:</b> <span style="color:#f87171; font-size:16px;"><b>$1.00 Only</b></span><br>
-    ⚠️ <b>Strict Expiry Rule:</b> Quotex par trade ka time strictly <b>00:01:00 (1 Minute)</b> hona chahiye! 2 min par kabhi nahi jana.
+    ⚠️ <b>Strict Expiry Rule:</b> Quotex par trade ka time strictly <b>00:01:00 (1 Minute)</b> hona chahiye!
 </div>
 """, unsafe_allow_html=True)
 
@@ -43,7 +42,7 @@ st.sidebar.markdown(f"""
 # 3. MAIN DASHBOARD & GLOBAL MODE SWITCHER
 # =====================================================================
 st.title("🤖 Quotex Ultimate Hybrid Master Engine")
-st.caption("Multi-Pair Radar Monitor Engine - Built for Precision Asset Tracking")
+st.caption("Lag-Free Multi-Pair Radar Engine - Built for High Speed Precision")
 st.markdown("---")
 
 market_mode = st.selectbox("🌐 CHOOSE SYSTEM MODE", [
@@ -52,51 +51,54 @@ market_mode = st.selectbox("🌐 CHOOSE SYSTEM MODE", [
 ])
 
 # =====================================================================
-# MODE A: REAL MARKET (6-COLUMN RADAR GRID - EXTENDED)
+# MODE A: REAL MARKET (TABS SYSTEM FOR ZERO LAG 🚀)
 # =====================================================================
 if market_mode == "Real Market (Multi-Pair Live Radar Dashboard)":
     st.markdown("""
     <div class="rule-box">
         <h3 style="color:#fbbf24; margin-top:0; font-size:16px; margin-bottom:5px;">🛑 FRESH vs OLD SIGNAL SECRETS (Loss Se Bachne Ka Tareeqa)</h3>
         <span style="font-size:13px; color:#cbd5e1;">
-            <b>1. FRESH SIGNAL (🟢 Safe):</b> Buy/Sell number achanak jump kar ke 18, 20, 22 par jaye aur sui Strong par aa jaye $\rightarrow$ <b>Furan entry lo!</b> | 
-            <b>2. OLD SIGNAL (❌ Dangerous):</b> Sui pehle se extreme corner par ruki ho $\rightarrow$ <b>Do not touch.</b> Market reverse ho sakti hai.
+            <b>1. FRESH SIGNAL (🟢 Safe):</b> Sui achanak jhatke se ghoom kar <b>Strong</b> par jaye aur niche buy/sell ka count barhay $\rightarrow$ <b>Furan entry lo!</b><br>
+            <b>2. OLD SIGNAL (❌ Dangerous):</b> Sui pehle se extreme corner par chipki ho ya candle khatam hone wali ho $\rightarrow$ <b>Skip kar do.</b>
         </span>
     </div>
     """, unsafe_allow_html=True)
     
-    # Grid columns 4 se badha kar 6 kar di hain
-    col1, col2, col3, col4, col5, col6 = st.columns(6)
-    widget_height = 315
+    # Elegant Top Navigation Tabs for Pairs
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+        "🇪🇺 EUR/USD", "🇬🇧 GBP/USD", "🇯🇵 USD/JPY", "🇪🇺 EUR/JPY", "🇦🇺 AUD/USD", "🇨🇦 USD/CAD"
+    ])
     
-    with col1:
-        st.markdown("##### 💱 EUR/USD (1m)")
+    widget_height = 360
+
+    with tab1:
+        st.markdown("<h4>💱 EUR/USD Technical Gauge (1m)</h4>")
         components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:EURUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
         
-    with col2:
-        st.markdown("##### 💱 GBP/USD (1m)")
+    with tab2:
+        st.markdown("<h4>💱 GBP/USD Technical Gauge (1m)</h4>")
         components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:GBPUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
         
-    with col3:
-        st.markdown("##### 💱 USD/JPY (1m)")
+    with tab3:
+        st.markdown("<h4>💱 USD/JPY Technical Gauge (1m)</h4>")
         components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:USDJPY", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
         
-    with col4:
-        st.markdown("##### 💱 EUR/JPY (1m)")
+    with tab4:
+        st.markdown("<h4>💱 EUR/JPY Technical Gauge (1m)</h4>")
         components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:EURJPY", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
         
-    with col5:
-        st.markdown("##### 💱 AUD/USD (1m)")
+    with tab5:
+        st.markdown("<h4>💱 AUD/USD Technical Gauge (1m)</h4>")
         components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:AUDUSD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
         
-    with col6:
-        st.markdown("##### 💱 USD/CAD (1m)")
+    with tab6:
+        st.markdown("<h4>💱 USD/CAD Technical Gauge (1m)</h4>")
         components.html(f"""<div class="tradingview-widget-container"><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>{{"interval": "1m", "width": "100%", "isIndicatorOnly": false, "height": {widget_height}, "symbol": "FX:USDCAD", "showIntervalTabs": false, "displayMode": "single", "locale": "en", "colorTheme": "dark"}}</script></div>""", height=widget_height+10)
 
     st.markdown("---")
 
 # =====================================================================
-# MODE B: OTC MARKET (SAFE CHECKLIST METHOD - FULLY RESTORED)
+# MODE B: OTC MARKET (SAFE CHECKLIST METHOD)
 # =====================================================================
 else:
     st.subheader("🕵️‍♂️ Safe OTC Matrix Setup (Multi-Strategy Checklist)")
@@ -118,25 +120,20 @@ else:
         
     st.markdown("---")
     
-    # Mathematical Confluence Algorithm Block
     if st.button("⚡ RUN FULL STRATEGY CONFLUENCE ALGORITHM"):
         score = 0
-        
-        # Bullish points calculation
         if macro_trend == "Bullish (Up Trend)": score += 1
         if snr_zone == "At Strong Support (Bottom)": score += 2
         if current_pattern in ["Hammer (Bullish Reversal)", "Bullish Engulfing"]: score += 2
         if rsi_state == "Oversold (<30)": score += 1.5
         if macd_state == "Bullish Cross (Green Line Up)": score += 1.5
         
-        # Bearish points calculation
         if macro_trend == "Bearish (Down Trend)": score -= 1
         if snr_zone == "At Strong Resistance (Top)": score -= 2
         if current_pattern in ["Shooting Star (Bearish Reversal)", "Bearish Engulfing"]: score -= 2
         if rsi_state == "Overbought (>70)": score -= 1.5
         if macd_state == "Bearish Cross (Red Line Up)": score -= 1.5
         
-        # Signal Output Generation Logic
         if score >= 3.5:
             st.markdown(f'<div class="signal-box buy-signal">🟩 SIGNAL: CALL (UP) <br><span style="font-size:14px;">Confluence Score: +{score} | Expiry: 1-2 Min</span></div>', unsafe_allow_html=True)
         elif score <= -3.5:
